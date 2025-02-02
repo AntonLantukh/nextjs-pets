@@ -1,0 +1,9 @@
+node_modules
+dist
+build
+lib
+cjs
+esm
+umd
+!/.vscode
+coverage

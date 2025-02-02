@@ -1,0 +1,12 @@
+.footer {
+  display: flex;
+  height: 60px;
+  background-color: var(--color-blue);
+}
+
+@media (width >= 768px) {
+  .cardContainer {
+    display: flex;
+    gap: 2rem;
+  }
+}
