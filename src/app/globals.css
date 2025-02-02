@@ -2,7 +2,9 @@
   --color-yellow: #e0b833;
   --color-blue: #2b6db1;
   --color-dark-blue: #285dab;
+  --color-light-blue: rgb(43 109 177 / 10%);
   --color-gray: #ddd;
+  --color-gray-dark: #666;
   --color-white: #fff;
   --color-black: #111;
   --container-width: 1100px;

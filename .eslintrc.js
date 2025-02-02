@@ -15,6 +15,7 @@ module.exports = {
     'prettier',
   ],
   settings: {
+    polyfills: ['fetch', 'URLSearchParams'], // injected by Next.js
     'import/extensions': ['.ts', '.tsx', '.js'],
     'import/resolver': {
       node: {

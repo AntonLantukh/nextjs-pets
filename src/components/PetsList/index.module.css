@@ -1,0 +1,21 @@
+.cardContainer {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 2rem;
+}
+
+.filters {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+@media (width >= 768px) {
+  .cardContainer {
+    flex-direction: row;
+  }
+
+  .filters {
+    gap: 1rem;
+  }
+}

@@ -1,0 +1,17 @@
+.pill {
+  height: 4rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  font-size: 1.6rem;
+  border: 0.1rem solid var(--color-gray);
+  background-color: var(--color-white);
+  border-radius: 1.6rem;
+  appearance: none;
+  cursor: pointer;
+}
+
+.pill[data-state='active'] {
+  border-color: var(--color-dark-blue);
+  background-color: var(--color-light-blue);
+  font-weight: bold;
+}
