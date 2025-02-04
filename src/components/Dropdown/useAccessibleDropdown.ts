@@ -108,7 +108,6 @@ export const useAccessibleDropdown = ({
 
         return true;
       });
-      console.log(list, 'list');
 
       onChange(list);
     },

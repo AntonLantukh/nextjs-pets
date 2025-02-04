@@ -13,17 +13,14 @@ const Pill = ({
   namespace: string;
   onClick: (value: boolean) => void;
 }) => {
-  const handleClick = () => {
-    onClick(!value);
-  };
-
   return (
     <button
       className={styles.pill}
       name={`pill-${namespace}`}
+      data-testid={`pill-${namespace}`}
       data-state={value ? 'active' : 'non-active'}
       value={value ? 'sorted' : 'unsorted'}
-      onClick={handleClick}
+      onClick={() => onClick(!value)}
       role="switch"
       aria-checked={value}
       aria-label={`Sorted by ${label}`}

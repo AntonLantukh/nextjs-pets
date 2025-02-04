@@ -20,13 +20,13 @@ export default function PetsList() {
   const nameParam = searchParams.getAll('name');
   const latestParam = searchParams.get('sort');
 
-  const { data, isLoading } = useQuery<Pet[]>('pets', getPets, {
+  const { data, isLoading } = useQuery<Pet[]>('pets', () => getPets({}), {
     staleTime: 30000,
     cacheTime: 30000,
   });
 
   const pets = useMemo(() => {
-    const filteredData: Pet[] = (data || []).filter(pet => {
+    const filteredData: Pet[] = (data || []).filter((pet: Pet) => {
       if (
         (speciesParam.length && !speciesParam.includes(pet.species)) ||
         (nameParam.length && !nameParam.includes(pet.name))
@@ -49,7 +49,7 @@ export default function PetsList() {
 
   return (
     <Container>
-      <div className={styles.petsList}>
+      <div className={styles.petsList} data-testid="cards-list">
         <h1>Pets</h1>
 
         <Filters speciesParam={speciesParam} nameParam={nameParam} latestParam={latestParam} />

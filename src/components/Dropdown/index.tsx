@@ -25,9 +25,10 @@ const Dropdown = ({
 }) => {
   const ref = useRef(null);
 
+  useClickOutside({ ref, handler: () => setIsDropdownOpen(false) });
+
   const { expanded, activeIndex, setIsDropdownOpen, setActiveIndex, selectValue, setIsFocus } =
     useAccessibleDropdown({ options, value, onChange });
-  useClickOutside({ ref, handler: () => setIsDropdownOpen(false) });
 
   return (
     <div className={styles.dropdownContainer} ref={ref}>
@@ -39,6 +40,7 @@ const Dropdown = ({
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         role="combobox"
+        data-testid={`dropdown-${namespace}`}
         aria-expanded={expanded}
         aria-label={`${label} filter`}
         aria-haspopup="listbox"
@@ -66,6 +68,7 @@ const Dropdown = ({
           >
             <input
               type="checkbox"
+              data-testid={`dropdown-${namespace}-option`}
               name={`dropdown-${namespace}-element-${option.label}`}
               value={option.value}
               id={`dropdown-${namespace}-option-field-${option.label}`}

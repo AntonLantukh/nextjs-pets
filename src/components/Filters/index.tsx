@@ -26,7 +26,7 @@ const Filters = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  const { data, isLoading } = useQuery<Pet[]>('pets', getPets, {
+  const { data, isLoading } = useQuery<Pet[]>('pets', () => getPets({}), {
     staleTime: 30000,
     cacheTime: 30000,
   });
@@ -76,7 +76,7 @@ const Filters = ({
       <Pill
         label="Latest added"
         value={latestParam === 'latest'}
-        namespace="latest_added"
+        namespace="latest-added"
         onClick={value => {
           updateQueryString('sort', value ? ['latest'] : []);
         }}

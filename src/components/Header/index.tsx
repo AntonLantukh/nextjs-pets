@@ -4,12 +4,14 @@ import { Container } from '@/components/Container';
 
 import styles from './index.module.css';
 
-export const Header = () => {
+const Header = () => {
   return (
-    <div className={styles.header}>
+    <header className={styles.header}>
       <Container>
         <Image src="/icons/pet-icon.svg" width={60} height={60} alt="Logo" />
       </Container>
-    </div>
+    </header>
   );
 };
+
+export default Header;

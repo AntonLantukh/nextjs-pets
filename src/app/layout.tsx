@@ -3,11 +3,9 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Open_Sans } from 'next/font/google';
 
-import { Container } from '@/components/Container';
-import { Header } from '@/components/Header';
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
 import QueryProvider from '@/components/QueryProvider';
-
-import styles from './layout.module.css';
 
 const openSans = Open_Sans({
   weight: ['400', '700'],
@@ -18,23 +16,23 @@ const openSans = Open_Sans({
 
 export const metadata: Metadata = {
   title: 'Pets App',
-  description: 'Aplication with pets',
+  description: 'Aplication with pets - Home page',
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <html lang="en" className={openSans.className}>
       <body>
         <Header />
         <QueryProvider>{children}</QueryProvider>
-        <div className={styles.footer}>
-          <Container>&nbsp;</Container>
-        </div>
+        <Footer />
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

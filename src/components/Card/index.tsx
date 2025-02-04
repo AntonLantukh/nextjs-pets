@@ -19,7 +19,7 @@ export const CardSkeleton = () => {
 
 export const Card = ({ name, image }: { name: string; image: string }) => {
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-testid="pet-card">
       <div className={styles.imageContainer}>
         <Image src={image} alt={name} width={640} height={360} className={styles.image} />
       </div>
