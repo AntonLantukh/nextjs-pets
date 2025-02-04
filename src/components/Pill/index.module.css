@@ -10,6 +10,10 @@
   cursor: pointer;
 }
 
+.pill:hover {
+  border: 0.1rem solid var(--color-dark-blue);
+}
+
 .pill[data-state='active'] {
   border-color: var(--color-dark-blue);
   background-color: var(--color-light-blue);

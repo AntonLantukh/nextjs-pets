@@ -1,6 +1,7 @@
 .dropdownContainer {
   position: relative;
   display: inline-block;
+  cursor: pointer;
 }
 
 .dropdownContainer::after {
@@ -18,12 +19,85 @@
 }
 
 .dropdown {
+  position: relative;
   height: 4rem;
   padding-left: 2rem;
   padding-right: 4rem;
   font-size: 1.6rem;
+  background-color: var(--color-white);
   border: 0.1rem solid var(--color-gray);
   border-radius: 1.6rem;
   appearance: none;
   cursor: pointer;
+}
+
+.dropdown:disabled {
+  cursor: not-allowed;
+}
+
+.dropdown:hover:not(:disabled) {
+  border: 0.1rem solid var(--color-blue);
+}
+
+.options {
+  display: block;
+  position: absolute;
+  top: 5rem;
+  padding: 0.2rem 0;
+  background-color: var(--color-white);
+  max-height: 20rem;
+  overflow: scroll;
+  border: 0.1rem solid var(--color-gray);
+  border-radius: 1.6rem;
+  transform-origin: top center;
+  transition: transform 0.2s;
+}
+
+.options[data-state='closed'] {
+  width: 0;
+  height: 0;
+  padding: 0;
+  display: block;
+  visibility: hidden;
+  overflow: hidden;
+  transform: scaleY(0);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  gap: 2rem;
+}
+
+.option[aria-selected='true'] {
+  background: var(--color-light-blue);
+}
+
+.option:hover {
+  background-color: var(--color-light-blue);
+}
+
+.option:focus {
+  border: 0.1rem solid var(--color-blue);
+}
+
+.option input[type='checkbox'] {
+  left: 0;
+  height: 2rem;
+  width: 2rem;
+  border: 0.1rem solid var(--color-gray);
+  border-radius: 0.4rem;
+  appearance: none;
+  background-color: transparent;
+  outline: none;
+  transition: outline 0.1s;
+}
+
+.option:hover input {
+  background-color: var(--color-grey);
+}
+
+.option input:checked {
+  background-color: var(--color-blue);
 }

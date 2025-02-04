@@ -1,0 +1,48 @@
+.skeleton {
+  background-color: var(--color-gray);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.skeletonImage {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 15px;
+}
+
+.skeletonTitle {
+  height: 3rem;
+  width: 100%;
+  justify-self: flex-start;
+  margin-right: auto;
+  border-radius: 1.6rem;
+}
+
+.skeletonLinkButton {
+  display: flex;
+  height: 4rem;
+  width: 4rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 50%;
+  color: var(--color-white);
+  text-decoration: inherit;
+}
+
+@media (width >= 768px) {
+  .skeletonImage {
+    aspect-ratio: 4 / 3;
+  }
+
+  .skeletonLinkButton {
+    border-radius: 1.6rem;
+    padding: 2rem 6rem;
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}

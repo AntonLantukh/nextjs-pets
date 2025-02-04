@@ -17,9 +17,11 @@
   object-fit: cover;
   width: 100%;
   border-radius: 15px;
+  height: auto;
 }
 
 .imageContainer {
+  width: 100%;
   flex: 0 1 150px;
 }
 
@@ -32,15 +34,4 @@
   .image {
     aspect-ratio: 4 / 3;
   }
-}
-
-.cta {
-  background-color: var(--color-blue);
-  display: flex;
-  height: 4rem;
-  width: 4rem;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-  border-radius: 50%;
 }

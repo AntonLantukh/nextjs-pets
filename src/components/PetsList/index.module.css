@@ -1,3 +1,7 @@
+.petsList {
+  margin-bottom: 4rem;
+}
+
 .cardContainer {
   display: flex;
   flex-flow: column wrap;
@@ -6,16 +10,13 @@
 
 .filters {
   display: flex;
-  gap: 2rem;
+  flex-flow: row wrap;
+  gap: 1rem;
   margin-bottom: 4rem;
 }
 
 @media (width >= 768px) {
   .cardContainer {
     flex-direction: row;
-  }
-
-  .filters {
-    gap: 1rem;
   }
 }

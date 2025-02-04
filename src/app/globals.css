@@ -61,3 +61,11 @@ h4,
   font-weight: normal;
   margin-bottom: 0.8rem;
 }
+
+ul,
+li {
+  list-style: none;
+  text-indent: 0;
+  padding: 0;
+  margin: 0;
+}

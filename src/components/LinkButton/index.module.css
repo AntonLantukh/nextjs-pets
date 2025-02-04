@@ -1,0 +1,36 @@
+.linkButton {
+  background-color: var(--color-dark-blue);
+  display: flex;
+  height: 4rem;
+  width: 4rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 50%;
+  color: var(--color-white);
+  text-decoration: inherit;
+}
+
+.linkButtonName {
+  display: none;
+}
+
+.linkButtonIcon {
+  display: block;
+}
+
+@media (width >= 768px) {
+  .linkButton {
+    border-radius: 1.6rem;
+    padding: 2rem 6rem;
+  }
+
+  .linkButtonName {
+    display: inline;
+    padding: 0 4rem;
+  }
+
+  .linkButtonIcon {
+    display: none;
+  }
+}
