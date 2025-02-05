@@ -6,6 +6,7 @@ import { useCallback } from 'react';
 
 import Pill from '@/components/Pill';
 import Select from '@/components/Select';
+import { getUpdatedSearchParams } from '@/utils/url';
 
 import styles from './index.module.css';
 
@@ -22,36 +23,21 @@ const NAME_OPTIONS = [
   { label: 'Sort by desc', value: 'desc' },
 ];
 
-const Filters = ({
-  species,
-  sortBy,
-  order,
-}: {
-  species: string | null;
-  sortBy: string | null;
-  order: string | null;
-}) => {
+const Filters = () => {
   const searchParams = useSearchParams();
+  // TODO: validate incoming values
+  const species = searchParams.get('species');
+  const sortBy = searchParams.get('sortBy');
+  const order = searchParams.get('order');
+
   const router = useRouter();
   const pathname = usePathname();
 
   const updateQueryString = useCallback(
-    (newParams: { name: string; value: (string | undefined)[] }[]) => {
-      const params = new URLSearchParams(searchParams.toString());
+    (params: Record<string, (string | undefined)[]>) => {
+      const newParams = getUpdatedSearchParams({ searchParams, params });
 
-      newParams.forEach(({ name, value }) => {
-        params.delete(name);
-
-        if (value?.length) {
-          value.forEach(param => {
-            if (param) {
-              params.append(name, param);
-            }
-          });
-        }
-      });
-
-      router.push(pathname + '?' + params.toString(), { scroll: false });
+      router.push(pathname + '?' + newParams.toString(), { scroll: false });
     },
     [searchParams, pathname, router],
   );
@@ -64,7 +50,7 @@ const Filters = ({
         value={species || ''}
         namespace="species"
         onChange={value => {
-          updateQueryString([{ name: 'species', value: [value] }]);
+          updateQueryString({ species: [value] });
         }}
       />
       <Select
@@ -73,10 +59,10 @@ const Filters = ({
         value={sortBy === 'name' ? order || '' : ''}
         namespace="name"
         onChange={value => {
-          updateQueryString([
-            { name: 'sortBy', value: value ? ['name'] : [] },
-            { name: 'order', value: value ? [value] : [] },
-          ]);
+          updateQueryString({
+            sortBy: value ? ['name'] : [],
+            order: value ? [value] : [],
+          });
         }}
       />
       <Pill
@@ -84,10 +70,10 @@ const Filters = ({
         value={sortBy === 'dateAdded' ? order === 'desc' : false}
         namespace="latest-added"
         onClick={value => {
-          updateQueryString([
-            { name: 'sortBy', value: value ? ['dateAdded'] : [] },
-            { name: 'order', value: value ? ['desc'] : [] },
-          ]);
+          updateQueryString({
+            sortBy: value ? ['dateAdded'] : [],
+            order: value ? ['desc'] : [],
+          });
         }}
       />
     </div>

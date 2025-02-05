@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <Container>
-        <Image src="/icons/pet-icon.svg" width={60} height={60} alt="Logo" />
+        <Image src="/icons/pet-icon.svg" width={60} height={60} priority={true} alt="Logo" />
       </Container>
     </header>
   );

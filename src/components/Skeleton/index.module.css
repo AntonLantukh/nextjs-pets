@@ -4,10 +4,12 @@
 }
 
 .skeletonImage {
+  object-position: center;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   width: 100%;
   border-radius: 15px;
+  height: auto;
 }
 
 .skeletonTitle {

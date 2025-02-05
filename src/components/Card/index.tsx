@@ -32,6 +32,7 @@ export const Card = ({ name, image }: { name: string; image: string }) => {
           placeholder="blur"
           blurDataURL={BLUR_PLACEHOLDER}
           className={styles.image}
+          sizes={'(max-width: 768px) 150px, 350px 100px'}
         />
       </div>
       <h3 className={`${styles.petName} h4`}>{name}</h3>

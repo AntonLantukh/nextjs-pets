@@ -1,9 +1,27 @@
-import PetsList from '@/components/PetsList';
+import { Suspense } from 'react';
 
-const Home = () => {
+import Pets from '@/components//Pets';
+import { Container } from '@/components/Container';
+import Filters from '@/components/Filters';
+import PetsSkeleton from '@/components/Pets/skeleton';
+
+import styles from './index.module.css';
+
+const Home = ({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) => {
   return (
     <div className="main">
-      <PetsList />
+      <Container>
+        <div className={styles.petsList} data-testid="cards-list">
+          <h1>Pets</h1>
+
+          <Filters />
+
+          <h2>Results</h2>
+          <Suspense fallback={<PetsSkeleton />}>
+            <Pets searchParams={searchParams} />
+          </Suspense>
+        </div>
+      </Container>
     </div>
   );
 };
