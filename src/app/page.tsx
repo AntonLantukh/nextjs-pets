@@ -1,9 +1,11 @@
 import PetsList from '@/components/PetsList';
 
-export default async function Home() {
+const Home = () => {
   return (
     <div className="main">
       <PetsList />
     </div>
   );
-}
+};
+
+export default Home;

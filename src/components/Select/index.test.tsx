@@ -1,24 +1,24 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 
-import Dropdown from './index';
+import Select from './index';
 
 const mockOptions = [
   { label: 'Ford', value: 'Ford' },
   { label: 'BMW', value: 'BMW' },
 ];
 
-describe('Dropdown component', () => {
+describe('Select component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('renders the dropdown component with options', async () => {
+  it('renders the select component with options', async () => {
     render(
-      <Dropdown
+      <Select
         label="Cars"
         namespace="cars"
-        value={[]}
+        value=""
         options={mockOptions}
         isLoading={false}
         onChange={() => {}}
@@ -32,12 +32,12 @@ describe('Dropdown component', () => {
     expect(options).toHaveLength(2);
   });
 
-  it('expands the dropdown component when clicked', () => {
+  it('expands the select component when clicked', () => {
     render(
-      <Dropdown
+      <Select
         label="Cars"
         namespace="cars"
-        value={[]}
+        value=""
         options={mockOptions}
         isLoading={false}
         onChange={() => {}}
@@ -55,12 +55,12 @@ describe('Dropdown component', () => {
     expect(screen.getByRole('listbox').getAttribute('data-state')).toEqual('expanded');
   });
 
-  it('expands and closes the dropdown component when navigating via keyboard', async () => {
+  it('expands and closes the select component when navigating via keyboard', async () => {
     render(
-      <Dropdown
+      <Select
         label="Cars"
         namespace="cars"
-        value={[]}
+        value=""
         options={mockOptions}
         isLoading={false}
         onChange={() => {}}
@@ -99,10 +99,10 @@ describe('Dropdown component', () => {
 
   it('supports keyboard navigation to select options', async () => {
     render(
-      <Dropdown
+      <Select
         label="Cars"
         namespace="cars"
-        value={[]}
+        value=""
         options={mockOptions}
         isLoading={false}
         onChange={() => {}}
@@ -154,10 +154,10 @@ describe('Dropdown component', () => {
     const onChange = vi.fn();
 
     render(
-      <Dropdown
+      <Select
         label="Cars"
         namespace="cars"
-        value={[]}
+        value=""
         options={mockOptions}
         isLoading={false}
         onChange={onChange}
@@ -171,7 +171,7 @@ describe('Dropdown component', () => {
     // Options are visible
     expect(screen.getByRole('listbox').getAttribute('data-state')).toEqual('expanded');
 
-    const options = await screen.getAllByTestId('dropdown-cars-option');
+    const options = await screen.getAllByTestId('select-cars-option');
 
     // Click on the first option
     act(() => {
@@ -180,7 +180,7 @@ describe('Dropdown component', () => {
 
     // Change callback was called
     expect(onChange).toBeCalledTimes(1);
-    expect(onChange).toBeCalledWith(['Ford']);
+    expect(onChange).toBeCalledWith('Ford');
 
     // Click on the second option
     act(() => {
@@ -189,17 +189,17 @@ describe('Dropdown component', () => {
 
     // Change callback was called
     expect(onChange).toBeCalledTimes(2);
-    expect(onChange).toBeCalledWith(['BMW']);
+    expect(onChange).toBeCalledWith('BMW');
   });
 
   it('selects when navigating using a keyboard', async () => {
     const onChange = vi.fn();
 
     render(
-      <Dropdown
+      <Select
         label="Cars"
         namespace="cars"
-        value={[]}
+        value=""
         options={mockOptions}
         isLoading={false}
         onChange={onChange}
@@ -223,7 +223,7 @@ describe('Dropdown component', () => {
 
     // Change callback was called
     expect(onChange).toBeCalledTimes(1);
-    expect(onChange).toBeCalledWith(['BMW']);
+    expect(onChange).toBeCalledWith('BMW');
 
     // Use keyboard to select the first option
     act(() => {
@@ -235,6 +235,6 @@ describe('Dropdown component', () => {
 
     // Change callback was called
     expect(onChange).toBeCalledTimes(2);
-    expect(onChange).toBeCalledWith(['Ford']);
+    expect(onChange).toBeCalledWith('Ford');
   });
 });

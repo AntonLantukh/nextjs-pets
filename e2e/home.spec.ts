@@ -17,8 +17,8 @@ test('page has basic sections', async ({ page }) => {
   await expect(page.locator('h2')).toContainText('Results');
 
   // Check filters
-  await expect(page.getByTestId('dropdown-species')).toBeVisible();
-  await expect(page.getByTestId('dropdown-name')).toBeVisible();
+  await expect(page.getByTestId('select-species')).toBeVisible();
+  await expect(page.getByTestId('select-name')).toBeVisible();
   await expect(page.getByTestId('pill-latest-added')).toBeVisible();
 
   // Check cards
@@ -26,6 +26,7 @@ test('page has basic sections', async ({ page }) => {
 });
 
 test('sorting works', async ({ page }) => {
+  const skeleton = page.getByTestId('pets-skeleton');
   const sortingElement = page.getByTestId('pill-latest-added');
   const petCards = page.getByTestId('pet-card');
   const firstCard = petCards.first();
@@ -36,29 +37,35 @@ test('sorting works', async ({ page }) => {
   await expect(firstCard.locator('h3')).toContainText('Daamin');
 
   await sortingElement.click();
-  await page.waitForTimeout(2000);
+  await page.waitForURL(/sortBy=dateAdded&order=desc/);
+  await expect(skeleton).toHaveCount(0);
 
   // State after clicking
   const checkedAfter = await sortingElement.getAttribute('aria-checked');
   await expect(checkedAfter).toEqual('true');
-  await expect(firstCard.locator('h3')).toContainText('Arlo');
+  await expect(firstCard.locator('h3')).toContainText('Mac');
 });
 
 test('filtering works', async ({ page }) => {
-  const sortingElement = page.getByTestId('pill-latest-added');
+  const skeleton = page.getByTestId('pets-skeleton');
+  const selectElement = page.getByTestId('select-species').getByRole('combobox');
+  const selectElementOptions = page.getByTestId('select-species').getByRole('listbox');
   const petCards = page.getByTestId('pet-card');
   const firstCard = petCards.first();
 
   // State before clicking
-  const checkedBefore = await sortingElement.getAttribute('aria-checked');
-  await expect(checkedBefore).toEqual('false');
+  await expect(selectElement.getByText('Species')).toBeVisible();
   await expect(firstCard.locator('h3')).toContainText('Daamin');
 
-  await sortingElement.click();
-  await page.waitForTimeout(2000);
+  await selectElement.click();
+  await expect(selectElementOptions).toBeVisible();
+  await selectElementOptions.getByText('Dog').click();
+  await selectElement.click();
+
+  await page.waitForURL(/species=dog/);
+  await expect(skeleton).toHaveCount(0);
 
   // State after clicking
-  const checkedAfter = await sortingElement.getAttribute('aria-checked');
-  await expect(checkedAfter).toEqual('true');
-  await expect(firstCard.locator('h3')).toContainText('Arlo');
+  await expect(selectElement.getByText('Selected: Dog')).toBeVisible();
+  await expect(firstCard.locator('h3')).toContainText('Dan');
 });

@@ -1,7 +1,6 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 
 import { getPets } from '@/api/pets';
@@ -11,57 +10,60 @@ import Filters from '@/components/Filters';
 import type { Pet } from '@/types/pet';
 
 import styles from './index.module.css';
-import { parseDate } from './utils';
 
-export default function PetsList() {
+const SkeletonList = () => {
+  return (
+    <div className={styles.cardContainer} data-testid="pets-skeleton">
+      {new Array(6).fill(null).map((_, key) => (
+        <CardSkeleton key={key} />
+      ))}
+    </div>
+  );
+};
+
+const Pets = ({ pets }: { pets: Pet[] | undefined }) => {
+  return (
+    <div className={styles.cardContainer}>
+      {(pets || []).map(pet => (
+        <Card name={pet.name} image={pet.photoUrl} key={pet.id} />
+      ))}
+    </div>
+  );
+};
+
+const PetsList = () => {
   const searchParams = useSearchParams();
+  const species = searchParams.get('species');
+  const sortBy = searchParams.get('sortBy');
+  const order = searchParams.get('order');
 
-  const speciesParam = searchParams.getAll('species');
-  const nameParam = searchParams.getAll('name');
-  const latestParam = searchParams.get('sort');
+  // const pets = await getPets({ species, sortBy, order });
+  // const isLoading = false;
 
-  const { data, isLoading } = useQuery<Pet[]>('pets', () => getPets({}), {
-    staleTime: 30000,
-    cacheTime: 30000,
-  });
-
-  const pets = useMemo(() => {
-    const filteredData: Pet[] = (data || []).filter((pet: Pet) => {
-      if (
-        (speciesParam.length && !speciesParam.includes(pet.species)) ||
-        (nameParam.length && !nameParam.includes(pet.name))
-      ) {
-        return false;
-      }
-      return true;
-    });
-
-    if (latestParam) {
-      const sortedData: Pet[] = filteredData
-        .slice(0)
-        .sort((a, b) => parseDate(b.dateAdded).getTime() - parseDate(a.dateAdded).getTime());
-
-      return sortedData;
-    }
-
-    return filteredData;
-  }, [data, speciesParam, nameParam, latestParam]);
+  const { data: pets, isLoading } = useQuery<Pet[]>(
+    ['pets', species, sortBy, order],
+    () => getPets({ species, sortBy, order }),
+    {
+      staleTime: 30000,
+      cacheTime: 30000,
+    },
+  );
 
   return (
     <Container>
       <div className={styles.petsList} data-testid="cards-list">
         <h1>Pets</h1>
 
-        <Filters speciesParam={speciesParam} nameParam={nameParam} latestParam={latestParam} />
+        <Filters species={species} sortBy={sortBy} order={order} />
 
         <h2>Results</h2>
 
         <div className={styles.cardContainer}>
-          {!isLoading
-            ? pets.map(pet => <Card name={pet.name} image={pet.photoUrl} key={pet.id} />)
-            : new Array(6).fill(null).map((_, key) => <CardSkeleton key={key} />)}
+          {!isLoading ? <Pets pets={pets} /> : <SkeletonList />}
         </div>
       </div>
     </Container>
   );
-}
+};
+
+export default PetsList;

@@ -1,27 +1,10 @@
 import type { Pet } from '@/types/pet';
+import { getUrlWithQueryParams } from '@/utils/url';
 
 type Params = {
-  species?: string;
-  name?: string;
-  dateAdded?: string;
-};
-
-const getUrlWithQueryParams = ({
-  url,
-  params,
-}: {
-  url: string;
-  params: Record<string, string>;
-}) => {
-  const parsedUrl = new URL(url);
-
-  Object.keys(params).forEach(el => {
-    if (el) {
-      parsedUrl.searchParams.append(el, params[el]);
-    }
-  });
-
-  return parsedUrl.toString();
+  species?: string | null;
+  sortBy?: string | null;
+  order?: string | null;
 };
 
 export const getPets = (params: Params): Promise<Pet[]> => {

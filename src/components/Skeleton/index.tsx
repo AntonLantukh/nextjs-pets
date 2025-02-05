@@ -1,6 +1,6 @@
-import styles from './index.module.css';
+import { cn } from '@/utils/cn';
 
-const cn = (classes: string[]) => classes.join(' ');
+import styles from './index.module.css';
 
 const stylesDict = {
   image: styles.skeletonImage,

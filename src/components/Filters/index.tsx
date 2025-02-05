@@ -2,49 +2,54 @@
 
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { useCallback, useMemo } from 'react';
-import { useQuery } from 'react-query';
+import { useCallback } from 'react';
 
-import { getPets } from '@/api/pets';
-import Dropdown from '@/components/Dropdown';
 import Pill from '@/components/Pill';
-import type { Pet } from '@/types/pet';
+import Select from '@/components/Select';
 
 import styles from './index.module.css';
-import { getOptions } from './utils';
+
+const SPECIES_OPTIONS = [
+  { label: 'No filtering', value: '' },
+  { label: 'Dog', value: 'dog' },
+  { label: 'Cat', value: 'cat' },
+  { label: 'Rat', value: 'rat' },
+];
+
+const NAME_OPTIONS = [
+  { label: 'Default sorting', value: '' },
+  { label: 'Sort by asc', value: 'asc' },
+  { label: 'Sort by desc', value: 'desc' },
+];
 
 const Filters = ({
-  speciesParam,
-  nameParam,
-  latestParam,
+  species,
+  sortBy,
+  order,
 }: {
-  speciesParam: string[];
-  nameParam: string[];
-  latestParam: string | null;
+  species: string | null;
+  sortBy: string | null;
+  order: string | null;
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const { data, isLoading } = useQuery<Pet[]>('pets', () => getPets({}), {
-    staleTime: 30000,
-    cacheTime: 30000,
-  });
-
-  const speciesOptions = useMemo(() => getOptions(data, 'species'), [data]);
-  const nameOptions = useMemo(() => getOptions(data, 'name'), [data]);
-
   const updateQueryString = useCallback(
-    (name: string, value: string[]) => {
+    (newParams: { name: string; value: (string | undefined)[] }[]) => {
       const params = new URLSearchParams(searchParams.toString());
 
-      params.delete(name);
+      newParams.forEach(({ name, value }) => {
+        params.delete(name);
 
-      if (value?.length) {
-        value.forEach(param => {
-          params.append(name, param);
-        });
-      }
+        if (value?.length) {
+          value.forEach(param => {
+            if (param) {
+              params.append(name, param);
+            }
+          });
+        }
+      });
 
       router.push(pathname + '?' + params.toString(), { scroll: false });
     },
@@ -53,32 +58,36 @@ const Filters = ({
 
   return (
     <div className={styles.filters}>
-      <Dropdown
-        options={speciesOptions}
+      <Select
+        options={SPECIES_OPTIONS}
         label="Species"
-        value={speciesParam}
+        value={species || ''}
         namespace="species"
-        isLoading={isLoading}
         onChange={value => {
-          updateQueryString('species', value);
+          updateQueryString([{ name: 'species', value: [value] }]);
         }}
       />
-      <Dropdown
-        options={nameOptions}
+      <Select
+        options={NAME_OPTIONS}
         label="Name"
-        value={nameParam}
+        value={sortBy === 'name' ? order || '' : ''}
         namespace="name"
-        isLoading={isLoading}
         onChange={value => {
-          updateQueryString('name', value);
+          updateQueryString([
+            { name: 'sortBy', value: value ? ['name'] : [] },
+            { name: 'order', value: value ? [value] : [] },
+          ]);
         }}
       />
       <Pill
         label="Latest added"
-        value={latestParam === 'latest'}
+        value={sortBy === 'dateAdded' ? order === 'desc' : false}
         namespace="latest-added"
         onClick={value => {
-          updateQueryString('sort', value ? ['latest'] : []);
+          updateQueryString([
+            { name: 'sortBy', value: value ? ['dateAdded'] : [] },
+            { name: 'order', value: value ? ['desc'] : [] },
+          ]);
         }}
       />
     </div>

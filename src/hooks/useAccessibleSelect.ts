@@ -1,19 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import type { Option } from './types';
+import type { Option } from '@/types/select';
 
-const registerOpenDropdownHandlers = ({
+const registerOpenSelectHandlers = ({
   options,
   activeIndex,
   selectValue,
   setActiveIndex,
-  setIsDropdownOpen,
+  setIsSelectOpen,
 }: {
   options: Option[];
   activeIndex: number;
   selectValue: (v: string) => void;
   setActiveIndex: (v: number) => void;
-  setIsDropdownOpen: (v: boolean) => void;
+  setIsSelectOpen: (v: boolean) => void;
 }) => {
   const keyDownCallback = (evt: KeyboardEvent) => {
     evt.preventDefault();
@@ -36,7 +36,7 @@ const registerOpenDropdownHandlers = ({
       case 'Esc':
       case 'Escape':
         evt.preventDefault();
-        setIsDropdownOpen(false);
+        setIsSelectOpen(false);
         return;
       case 'PageUp':
       case 'Home':
@@ -58,10 +58,10 @@ const registerOpenDropdownHandlers = ({
   };
 };
 
-const registerClosedDropdownHandlers = ({
-  setIsDropdownOpen,
+const registerClosedSelectHandlers = ({
+  setIsSelectOpen,
 }: {
-  setIsDropdownOpen: (v: boolean) => void;
+  setIsSelectOpen: (v: boolean) => void;
 }) => {
   const keyDownCallback = (evt: KeyboardEvent) => {
     switch (evt.key) {
@@ -72,7 +72,7 @@ const registerClosedDropdownHandlers = ({
       case ' ':
       case 'Enter':
         evt.preventDefault();
-        setIsDropdownOpen(true);
+        setIsSelectOpen(true);
     }
   };
 
@@ -83,38 +83,18 @@ const registerClosedDropdownHandlers = ({
   };
 };
 
-export const useAccessibleDropdown = ({
+export const useAccessibleSelect = ({
   options,
-  value,
-  onChange,
+  selectValue,
 }: {
   options: Option[];
-  value: string[] | null;
-  onChange: (value: string[]) => void;
+  selectValue: (value: string) => void;
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isFocus, setIsFocus] = useState(false);
 
-  const selectValue = useCallback(
-    (optionValue: string) => {
-      const checked = !(value || []).includes(optionValue);
-
-      const newValue = [...(value || []), optionValue];
-      const list: string[] = (newValue || []).filter(el => {
-        if (optionValue === el) {
-          return checked;
-        }
-
-        return true;
-      });
-
-      onChange(list);
-    },
-    [value, onChange],
-  );
-
-  const setIsDropdownOpen = useCallback(
+  const setIsSelectOpen = useCallback(
     (v: boolean) => {
       if (v) {
         setActiveIndex(0);
@@ -127,26 +107,26 @@ export const useAccessibleDropdown = ({
 
   useEffect(() => {
     if (expanded) {
-      return registerOpenDropdownHandlers({
+      return registerOpenSelectHandlers({
         activeIndex,
         options,
         setActiveIndex,
         selectValue,
-        setIsDropdownOpen,
+        setIsSelectOpen,
       });
     } else {
       if (isFocus) {
-        return registerClosedDropdownHandlers({
-          setIsDropdownOpen,
+        return registerClosedSelectHandlers({
+          setIsSelectOpen,
         });
       }
     }
-  }, [expanded, activeIndex, isFocus, options, selectValue, setIsDropdownOpen]);
+  }, [expanded, activeIndex, isFocus, options, selectValue, setIsSelectOpen]);
 
   return {
     expanded,
     activeIndex,
-    setIsDropdownOpen,
+    setIsSelectOpen,
     setActiveIndex,
     selectValue,
     setIsFocus,
