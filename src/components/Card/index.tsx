@@ -36,7 +36,7 @@ export const Card = ({ name, image }: { name: string; image: string }) => {
         />
       </div>
       <h3 className={`${styles.petName} h4`}>{name}</h3>
-      <LinkButton href="https://coolblue.nl" title="View" />
+      <LinkButton href="https://alantukh.com" title="View" />
     </div>
   );
 };

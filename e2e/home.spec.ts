@@ -8,20 +8,16 @@ test('page has basic sections', async ({ page }) => {
   const metaTitle = await page.title();
   const metaDescription = page.locator('meta[name="description"]');
 
-  // Check metadata
   await expect(metaTitle).toEqual('Pets App');
   await expect(metaDescription).toHaveAttribute('content', 'Aplication with pets - Home page');
 
-  // Check headers
   await expect(page.locator('h1')).toContainText('Pets');
   await expect(page.locator('h2')).toContainText('Results');
 
-  // Check filters
   await expect(page.getByTestId('select-species')).toBeVisible();
   await expect(page.getByTestId('select-name')).toBeVisible();
   await expect(page.getByTestId('pill-latest-added')).toBeVisible();
 
-  // Check cards
   await expect(page.getByTestId('cards-list')).toBeVisible();
 });
 
@@ -31,7 +27,6 @@ test('sorting works', async ({ page }) => {
   const petCards = page.getByTestId('pet-card');
   const firstCard = petCards.first();
 
-  // State before clicking
   const checkedBefore = await sortingElement.getAttribute('aria-checked');
   await expect(checkedBefore).toEqual('false');
   await expect(firstCard.locator('h3')).toContainText('Daamin');
@@ -40,7 +35,6 @@ test('sorting works', async ({ page }) => {
   await page.waitForURL(/sortBy=dateAdded&order=desc/);
   await expect(skeleton).toHaveCount(0);
 
-  // State after clicking
   const checkedAfter = await sortingElement.getAttribute('aria-checked');
   await expect(checkedAfter).toEqual('true');
   await expect(firstCard.locator('h3')).toContainText('Mac');
@@ -53,7 +47,6 @@ test('filtering works', async ({ page }) => {
   const petCards = page.getByTestId('pet-card');
   const firstCard = petCards.first();
 
-  // State before clicking
   await expect(selectElement.getByText('Species')).toBeVisible();
   await expect(firstCard.locator('h3')).toContainText('Daamin');
 
@@ -65,7 +58,6 @@ test('filtering works', async ({ page }) => {
   await page.waitForURL(/species=dog/);
   await expect(skeleton).toHaveCount(0);
 
-  // State after clicking
   await expect(selectElement.getByText('Selected: Dog')).toBeVisible();
   await expect(firstCard.locator('h3')).toContainText('Dan');
 });
